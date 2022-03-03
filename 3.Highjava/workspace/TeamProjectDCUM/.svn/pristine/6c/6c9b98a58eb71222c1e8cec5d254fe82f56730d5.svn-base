@@ -1,0 +1,38 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<br>
+	<div class="container" >
+		<h4>강의실</h4>
+		<br>
+		<table class="table table-hover">
+				<tr>
+					<td>
+						<a href="<%=request.getContextPath()%>/work_psj/myclass/curmyclass.jsp" target="ifr-main" class="class">수강중강의</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<a href="<%=request.getContextPath()%>/work_psj/Test/index.jsp" target="ifr-main" class="class">시험등록</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<a href="<%=request.getContextPath()%>/work_psj/p_manageStudent/index.jsp" target="ifr-main" class="class">과제관리</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<a href="<%=request.getContextPath()%>/work_psj/notice/pindex.jsp" target="ifr-main" class="class">강의공지사항</a>
+					</td>
+				</tr>
+		</table>
+	</div>
+</body>
+</html>

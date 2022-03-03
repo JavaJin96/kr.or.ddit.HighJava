@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+.container{
+	padding: 0 20% 0 10%;
+}
+h4{
+	font-weight : bold;
+}
+a{
+	color: black;
+}

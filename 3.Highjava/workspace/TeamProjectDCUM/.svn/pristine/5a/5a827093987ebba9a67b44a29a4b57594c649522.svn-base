@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apach.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="project">
+
+	<!-- 커뮤니티 전체 게시글 리스트 -->
+	<select id="getAllCommu" resultClass="commuVo">
+		select cmu_num, TO_CHAR(cmu_date, 'yyyy-MM-dd HH:mm') as cmu_date, cmu_title, cmu_sort from community order by cmu_num desc
+	</select>
+	
+	<!-- 커뮤니티 선택 -->
+	<select id="selectCommu" resultClass="commuVo" parameterClass="string">
+		select cmu_num, cmu_writer, cmu_cont, TO_CHAR(cmu_date, 'yyyy-MM-dd HH:mm') as cmu_date, cmu_title, cmu_sort from community where cmu_num = #cmu_num#
+	</select>
+	
+	<!-- 커뮤니티 작성 -->
+	<insert id="insertCommu" parameterClass="commuVo"> 
+ 		insert into community(cmu_num, cmu_writer, cmu_cont, cmu_date, cmu_title, mem_id, cmu_sort) 
+ 			   values (community_seq.nextval, #cmu_writer#, #cmu_cont#, TO_CHAR(sysdate, 'yyyy-MM-dd'), #cmu_title#, #mem_id#,#cmu_sort#)
+ 		<selectKey resultClass="int"> 
+ 			select community_seq.currval from dual 
+ 		</selectKey> 
+ 	</insert>
+	
+	<!-- 커뮤니티 수정 -->
+	<update id="updateCommu" parameterClass="commuVo">
+ 		update community set cmu_writer = #cmu_writer#, cmu_cont = #cmu_cont#, cmu_title = #cmu_title#, cmu_sort = #cmu_sort# where cmu_num = #cmu_num#
+ 	</update>
+	
+	<!-- 커뮤니티 삭제 -->
+	<delete id="deleteCommu" parameterClass="String">
+ 		delete from community where cmu_num = #cmu_num#
+ 	</delete>
+ 	
+ 	<!-- 커뮤니티 검색 -->
+	<select id="searchCommu" resultClass="commuVo" parameterClass="String">
+		select * from community where cmu_cont like '%' || #cmu_cont# || '%' order by cmu_num desc
+	</select>
+	
+	<!-- 말머리 검색 -->
+	<select id="sortCommu" resultClass="commuVo" parameterClass="String">
+		select * from community where cmu_sort = #cmu_sort# order by cmu_num desc
+	</select>
+
+	<!-- ================================================================================================== -->
+	
+	
+	<!-- 댓글 리스트 -->
+	<select id="getAllReCommu" resultClass="recommuVo" parameterClass="String">
+		select * from cmu_reply where cmu_num = #cmu_num#
+	</select>
+	
+	<!-- 댓글 선택 -->
+	<select id="selectReCommu" resultClass="recommuVo" parameterClass="String">
+		select * from cmu_reply where cmu_re_num = #cmu_re_num#
+	</select>
+	
+	<!-- 댓글 작성 -->
+	<insert id="insertReCommu" parameterClass="recommuVo">
+ 		insert into cmu_reply values(cmu_reply_seq.nextval, #cmu_re_writer#, #cmu_re_cont#, sysdate, #cmu_num#, #mem_id#)
+ 		<selectKey resultClass="int">
+ 			select cmu_reply_seq.currval from dual 
+ 		</selectKey>
+ 	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="updateReCommu" parameterClass="recommuVo">
+ 		update cmu_reply set cmu_re_writer = #cmu_re_writer#, cmu_re_cont = #cmu_re_cont# where cmu_re_num = #cmu_re_num#
+ 	</update>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteReCommu" parameterClass="String">
+		delete from cmu_reply where cmu_re_num = #cmu_re_num#
+	</delete>
+	
+</sqlMap>

@@ -1,0 +1,122 @@
+@charset "UTF-8";
+
+
+.container {
+	min-width: 950px;
+	max-width: 1300px;
+	margin: 0 auto;
+}
+
+.content {
+	width: 95%;
+	height: 390px; 
+	display: block;
+	margin-top: 2%;
+}
+
+.card {
+	float: left;
+	display: inline-block;
+	width: 300px;
+	height: 200px;
+	margin: 0 8%;
+	margin-bottom: 200px;
+}
+
+.c-body {
+	background-color: #e8e8e8;
+	border-radius: 0 0 5px 5px;
+	min-height: unset;
+	height: 200px;
+	padding: 8%;
+}
+
+img {
+	display: flex;
+	height: 100%;
+}
+
+a {
+	background-color: #e6ffe6;
+}
+
+#p1 {
+	text-decoration: underline;
+}
+
+.btn-info {
+	color: #fff;
+	background-color: #17a2b8;
+	border-color: #17a2b8;
+}
+
+select {
+	width: 100px;
+}
+
+/* 열람실 */
+#seat * button {
+	text-align: center;
+	vertical-align: middle;
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	margin: 0 1%;
+}
+#seat * td , #seat * tr{
+	margin: 0 2%;
+}
+
+#seat {
+	border: 1px solid gray;
+	border-collapse : separate;
+	border-spacing: 20px;
+	height: 298px;
+	padding: 1% ;
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#seat * td{
+	width: 160px;
+}
+
+#ipgu{
+	    margin-top: 10%;
+}
+
+/*열람실 예약*/
+/* .res-seat { */
+/* 	display: inline-block; */
+/*     width: 617px; */
+/* 	float: right; */
+/* 	height: 250px; */
+/* } */
+.res-head{
+	width: 150px;
+}
+
+/* 스터디룸 예약하기 */
+
+.res-room {
+	width: 95%;
+}
+
+.res-room th {
+	background-color: lightgray;
+}
+
+.res-room td input {
+	width: 160px;
+	margin-right: 2%;
+}
+
+.res-room h3 {
+	font-weight: bold;
+}
+
+/* h5, p { */
+/* 	display: inline-block; */
+/* } */
+

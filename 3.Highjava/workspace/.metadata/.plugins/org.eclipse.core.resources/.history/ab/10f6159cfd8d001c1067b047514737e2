@@ -1,0 +1,27 @@
+package kr.or.ddit.psj.controller;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import kr.or.ddit.dcum.vo.TestVO;
+import kr.or.ddit.psj.service.ClassServiceimpl;
+
+
+@WebServlet("/selectTestMenu.do")
+public class selectTestMenu extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<TestVO> list = new ArrayList<>();
+		ClassServiceimpl service = ClassServiceimpl.getInstance();
+	}
+
+}

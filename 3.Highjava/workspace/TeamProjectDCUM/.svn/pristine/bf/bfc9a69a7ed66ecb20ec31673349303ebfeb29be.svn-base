@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+.container{
+	min-width: 950px;
+	max-width :1300px;
+	margin: 0 auto ;
+	overflow: hidden;
+}
+
+#p1 {
+	text-decoration: underline;
+}
+table{
+	min-width: 950px;
+	max-width: 1000px;
+}
+.img_t button{
+	margin-top: 140px;
+}
+th{
+	width: 150px;
+}
+img{
+	width:150px;
+	height: 180px;
+}
+.img_t{
+	height: 180px;
+}
+.dark-table{
+	text-align: center;
+}

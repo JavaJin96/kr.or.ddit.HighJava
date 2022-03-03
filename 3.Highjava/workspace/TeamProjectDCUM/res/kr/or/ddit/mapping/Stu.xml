@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="Stu">
+	
+	<!-- 메일 리스트를 불러오는 메서드 -->
+	<select id="mailView" resultClass="MessageVO" parameterClass="String">
+		
+		SELECT b.* FROM MEMBER A, MESSAGE B WHERE A.MEM_ID = B.BAL_MEM_ID AND B.SU_MEM_ID = #mem_id# 
+	
+	</select>
+	
+	
+	<!-- 메일 발신 리스트를 불러오는 메서드 -->
+	<select id="balView" resultClass="MessageVO" parameterClass="String">
+		
+		select * from message where BAL_MEM_ID = #balmemid#
+	
+	</select>
+	
+	
+	<!-- 메일 리스트를 불러오는 메서드 -->
+	<select id="mailList" resultClass="MessageVO" parameterClass="String">
+		
+		select * from MESSAGE where MES_NUM = #data#
+	
+	</select>
+	
+	
+	<!-- 쪽지작성메서드 -->
+	<insert id= "mailinsert" parameterClass="MessageVO">
+		insert into MESSAGE VALUES (SEQ_MESSAGE.NEXTVAL , sysdate , 
+		#mes_cont#, #bal_mem_id#, #su_mem_id#)	
+			
+	</insert>
+	
+	<!-- 쪽지작성시 체크리스트 생성 -->
+	<select id ="viewSubject" resultClass="SubjectVO">
+		
+		select * from subject
+	
+	
+	</select>
+	
+	<!-- 쪽지작성시 체크리스트 2번째 옵션 -->
+	<select id = "viewSubject2" resultClass="SubjectVO" parameterClass="String">
+	
+	 SELECT A.* FROM CLASS_STUDENT A, SUBJECT B 
+	 WHERE A.SUB_NUM = B.SUB_NUM 
+	 AND B.SUB_NAME = #SUB_NAME#  
+	
+	</select>
+		
+	<delete id="DeleteMail" parameterClass="String">
+			DELETE FROM MESSAGE where mes_num = #mesnum#
+	</delete>
+	
+	
+	<!-- 내가가지고있는 수강과목을 불러오는 메서드 -->
+	<select id = "SubjectList2" resultClass="SubjectVO" parameterClass="String">
+			select * from SUBJECT B, CLASS_STUDENT C
+        where B.SUB_NUM=C.SUB_NUM AND C.MEM_ID = #res#
+	</select>
+	
+		
+	
+	
+	<!-- 수강 신청을 취소하는 메서드 -->
+	<delete id="deleteSubeject" parameterClass="String">
+	
+		delete from class_student 
+    		where sub_num = #subnum#
+	
+	</delete>
+	
+	
+	
+	
+	
+	
+</sqlMap>	

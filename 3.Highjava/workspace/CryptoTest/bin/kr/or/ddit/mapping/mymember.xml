@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.spache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="mymember">
+	
+	<insert id="insertMember" parameterClass="MemberVO">
+		insert into MYMEMBER (MEM_ID, MEM_PASS, MEM_NAME, MEM_TEL, MEM_ADDR)  
+	    values(#mem_id#, #mem_pass#, #mem_name#, #mem_tel#, #mem_addr#)
+	</insert>
+	
+	
+	<delete id="deleteMember" parameterClass="String">
+		delete from MYMEMBER where MEM_ID=#mem_id#
+	</delete>
+	
+	
+	<update id="updateMember" parameterClass="MemberVO">
+		update MYMEMBER set MEM_PASS = #mem_pass#, MEM_NAME = #mem_name#, MEM_TEL = #mem_tel#, MEM_ADDR = #mem_addr# 
+						where MEM_ID = #mem_id#
+	</update>
+	
+	
+	<select id="selectAllMember" resultClass="MemberVO" >
+		select * from MYMEMBER
+	</select>
+	
+	
+	<select id="selectCountMember" resultClass="int" parameterClass="String">
+		select count(MEM_ID) FROM MYMEMBER where MEM_ID = #mem_id#
+	</select>
+	
+	
+	<!-- 
+		Map 데이터를 파라미터로 지정하면 쿼리문의 '변수명' 역할은 Map의 key값 으로 한다.
+		
+		파라미터로 가져온 값을 컬럼명의 자리에서 사용할 경우에는 달러($) 기호를 사용해서 표기한다.
+		
+		key값 정보 : 회원ID(memID), 수정할컬럼(field), 수정할데이터(data)
+	 -->
+	<update id="updateMember2"  parameterClass="Map" >
+		update MYMEMBER set
+		  $field$ = #data# where MEM_ID = #memid#
+	</update>	 
+	
+	
+	
+</sqlMap>

@@ -1,0 +1,20 @@
+package kr.or.ddit.dcum.vo;
+
+public class TeskVO {
+	private String mem_id      ;
+	private String sub_num     ;
+	private String score       ;
+	private String q1          ;
+	private String q2          ;
+	private String q3          ;
+	private String q4          ;
+	private String column1     ;
+	private String q6          ;
+	private String q7          ;
+	private String q8          ;
+	private String q9          ;
+	private String q10         ;
+	private String test_name   ;
+	private String sub_name    ;
+	private String answer ;
+}

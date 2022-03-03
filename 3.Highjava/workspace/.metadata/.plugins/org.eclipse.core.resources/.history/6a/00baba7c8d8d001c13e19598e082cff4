@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="dum">
+	
+	
+	<!-- 학생관련부분=============================================================================  -->
+	<!-- 회원등록  -->
+	<insert id="insertMember" parameterClass="MemberVO">
+		insert into MEMBER values
+		(#mem_id#, #mem_pass#, #mem_sort_num#, #mem_sort_nm#, #mem_name#, 
+		#mem_bir#, #mem_gender#, #mem_add#, #mem_mail#, #mem_hp#)
+	</insert>
+	
+	<insert id="insertStudent" parameterClass="StudentVO">
+		insert into STUDENT values
+		(#mem_id#, #start_date#, #end_date#, #dep_num#)
+	</insert>
+	
+	<insert id="insertProfessor" parameterClass="ProfessorVO">
+		insert into PROFESSOR values
+		(#mem_id#, #pro_room_num#, #pro_room_hp#, #dep_num#)
+	</insert>
+	
+	<insert id="insertEmployee" parameterClass="EmployeeVO">
+		insert into Employee values
+		(#mem_id#, #emp_hp#)
+	</insert>
+	
+	<select id="loginChk" parameterClass="Map" resultClass="MemberVO">
+		select * from member where mem_id = #mem_id# and mem_pass=#mem_pass#
+	</select>
+	<!-- 회원등록  -->
+	
+	<!-- 회원조회 -->
+	<select id="selectAllMember" resultClass="MemberVO">
+		select * from MEMBER
+	</select>
+	
+	<select id="selectOneMember" resultClass="MemberVO" parameterClass="int">
+		select * from MEMBER WHERE MEM_ID LIKE #data#||'%'
+	</select>
+	<!-- 회원조회 -->
+	
+	<!-- 강의 등록 -->
+	<insert id="insertClass0" parameterClass="ClassVO">
+		insert into CLASS values (#class_num#, #class_name#, 
+		#class_start_date#, #class_end_date#, #class_cnt#, #sub_num#) 
+	</insert>
+	<!-- 강의 등록 -->
+	
+	<!-- 수강 조회 -->
+	<select id="selectAllMySubject" parameterClass="String" resultClass="SubjectVO">
+		select *
+          from CLASS_STUDENT B, SUBJECT C
+         where C.SUB_NUM = B.SUB_NUM
+               and B.MEM_ID = #data#
+	</select>
+	
+	<select id="selectAllMySubject2" parameterClass="String" resultClass="SubjectVO">
+		select C.*
+          from CLASS_STUDENT B, SUBJECT C
+         where C.SUB_NUM = B.SUB_NUM
+               and B.MEM_ID = #data#
+	</select>
+	
+	<select id="selectOneSubjectForName" parameterClass="String" resultClass="SubjectVO">
+		select * from SUBJECT where SUB_NAME = #data#
+	</select> 
+	<!-- 수강 조회 -->
+	
+	<!-- 강의 조회 -->
+	<select id="selectClass" parameterClass="String" resultClass="ClassVO">
+		select * from CLASS where SUB_NUM = #data#
+	</select>
+	
+	<select id="selectClassByName" parameterClass="String" resultClass="ClassVO">
+		select * from CLASS where CLASS_NAME = #data#
+	</select>
+	<!-- 강의 조회 -->
+	
+	<!-- 성적조회 -->
+	<select id="selectStudent" resultClass="ClassStudentVO">
+		select * from CLASS_STUDENT
+	
+	</select>
+	
+	<!-- 전체 공지사항 조회 -->
+	<select id="selectNotice" resultClass="GongjiVO">
+	 	select * from GONGJI
+	</select>
+	
+	<!-- 전체 강의공지사항 조회 -->
+	<select id="selectClassNotice" resultClass="BoardVO">
+		select * from BOARD where BOARD_SORT = 2
+	</select>
+	
+	<!-- 학생이 듣고있는 모든 강의공지사항 -->
+	<select id="selectAllMyClassNotice" parameterClass="String" resultClass="TempBoardVO">
+		select a.*, c.SUB_NAME from board a, class b, subject c, class_student d 
+		 where a.class_num = b.CLASS_NUM 
+		   and b.sub_num = c.sub_num 
+		   and c.sub_num = d.sub_num 
+		   and d.mem_id = #data# 
+		   and a.board_sort = 2
+	</select>
+	
+	
+	
+	<!-- 과목명으로 강의공지사항 출력(강의수강페이지) -->
+	<select id="selectAllClassNoticeBysn" parameterClass="String" resultClass="BoardVO">
+		select a.* from board a, class b, subject c, class_student d 
+		 where a.class_num = b.CLASS_NUM 
+		   and b.sub_num = c.sub_num 
+		   and c.sub_num = d.sub_num 
+		   and c.sub_num = #data# 
+		   and a.board_sort = 2
+	</select>
+	
+	<!-- 수정- 강의공지사항 출력(강의수강페이지, 해당과목에 대한 공지사항) -->
+	<select id="selectAllClassNoticeBysn2" parameterClass="String" resultClass="BoardVO">
+		select a.* from board a, class b where a.class_num = b.class_num and board_sort = 2 and b.sub_num = #data#
+
+	</select>
+	
+	<!-- 모든 질의응답 게시판 조회 -->
+	<select id="selectAllQna" resultClass="BoardVO">
+		select * from BOARD where board_sort = 1
+	</select>
+	
+	<!-- 질의응답 게시판 등록 -->
+	<insert id="insertQna" parameterClass="BoardVO">
+		insert into BOARD values (SEQ_QNABOARD.NEXTVAL, #board_writer#, #board_cont#, sysdate, #board_title#, 1, #class_num# ,#mem_id#)
+	</insert>	
+	
+	<!-- 질의응답 게시판 삭제 -->
+	<delete id="deleteQna" parameterClass="String">
+		delete from BOARD where BOARD_NUM = #data#
+	</delete>
+	
+	<!-- 질의응답 답글(댓글) 등록 -->
+	<insert id="insertQnaRe" parameterClass="Board_ReplyVO">
+		insert into BOARD_REPLY values (SEQ_BOARD_REPLY.NEXTVAL, #re_writer#, #re_cont#, sysdate, #board_num#)
+	</insert>
+	
+	<!-- 해당 질의응답에 관련된 댓글 조회 -->
+	<select id="selectBoardReply" parameterClass="String" resultClass="Board_ReplyVO">
+		select * from Board_Reply where BOARD_NUM = #data#
+	</select>
+	
+	<!-- 질의응답 글 수정 -->
+	<update id="modifyQna" parameterClass="BoardVO">
+		update BOARD set BOARD_CONT = #board_cont#, BOARD_TITLE = #board_title# where BOARD_NUM = #board_num#
+	</update>
+		
+	<!--과목별 조회  -->
+	<select id ="selectSubject" parameterClass="String" resultClass="SubjectVO">
+      	select *
+          from CLASS_STUDENT B, SUBJECT C
+         where C.SUB_NUM = B.SUB_NUM
+               and B.MEM_ID = #data#
+	</select>
+	
+	<!-- 수강신청 과목 -->
+	<select id="SubjectList" resultClass="SubjectVO" parameterClass="String">
+		select * from Subject where status = #status#
+	</select>
+	
+	<!-- 수강 신청 저장하는 메서드 -->
+	<insert id="viewClass" parameterClass="map">
+		insert into CLASS_STUDENT (MEM_ID,SUB_NUM,SUB_SCORE) values (#mem_id#,#view#,0)
+		
+		
+		<selectKey keyProperty="sub_num" resultClass="string">
+		    select sub_num from  CLASS_STUDENT where sub_num  = #view#
+		</selectKey>
+	</insert>
+	 
+
+	<!-- 강의 내부 질의응답 게시판 조회-->
+	<select id="selectInclassBoard" parameterClass="String" resultClass="BoardVO">
+		select * from BOARD where BOARD_SORT = 1 and CLASS_NUM = #data#
+	</select>
+	
+	<!-- 수강평가 미등록 과목 조회하기 -->
+	<select id="selectClaComent" parameterClass="Map" resultClass="SubjectVO">
+		        select C.*
+          from CLASS_STUDENT B, SUBJECT C
+         where C.SUB_NUM = B.SUB_NUM
+               and B.MEM_ID = #memid#
+               and C.STATUS = #status#
+	</select>
+	
+	<!-- 수강평가 등록하기 -->
+	<update id="submitComent" parameterClass="Map">
+		update SUBJECT set STATUS = #data# where SUB_NAME = #sub_name#
+	</update>
+	
+	<!-- 과제 조회하기 -->
+	<select id="selectAllMyTask" parameterClass="TempTaskVO" resultClass="TempTaskVO">
+		         		select D.*, C.SUB_NAME
+          from CLASS_STUDENT B, SUBJECT C, TASK_SUBMIT D
+         where C.SUB_NUM = B.SUB_NUM
+               and C.SUB_NUM = D.SUB_NUM
+               and B.MEM_ID = #mem_id#
+               and D.TASK_CHK = #task_chk#
+               and D.MEM_ID = #mem_id#
+	</select>
+	
+	<!-- 과제 제출하기 -->
+	<update id="submitTask" parameterClass="Task_submitVO">
+		update TASK_SUBMIT set TASK_CHK = #task_chk#, TASK_TITLE = #task_title#,
+	    PATH = #path#, TASK_COMT = #task_comt# where MEM_ID = #mem_id# and TASK_NAME = #task_name#
+	</update>
+
+
+	<!-- 학생관련부분=============================================================================  -->
+	
+
+
+	<!-- 교수관련부분=============================================================================  -->
+	<!-- 과목 조회 -->
+	<select id="selectSubjectListPro" parameterClass="String" resultClass="SubjectVO">
+		select * from SUBJECT where MEM_ID = #data#
+	</select>
+
+
+	<!-- 과목 등록 -->
+	<insert id="insertClass" parameterClass="ClassVO">
+		insert into CLASS values(SEQ_CLASSNUM.NEXTVAL, #class_name#, sysdate, sysdate+7, 0, #sub_num#, #path#, #content#)
+	</insert>
+	
+	<!-- 과목에 출석부 생성 -->
+	<insert id="insertClaChk" parameterClass="Class_chkVO">
+		insert into CLASS_CHK values(#class_num#, #mem_id#, #status#, SEQ_CLASS_CHK.NEXTVAL)
+	</insert>
+
+	<!-- 해당 교수가 쓴 모든 공지사항 -->
+	<select id="selectAllMyNotice" parameterClass="String" resultClass="TempBoardVO">
+		select a.*, c.SUB_NAME from board a, class b, subject c, class_student d 
+		 where a.class_num = b.CLASS_NUM 
+		   and b.sub_num = c.sub_num 
+		   and c.sub_num = d.sub_num 
+		   and a.mem_id = #data# 
+		   and a.board_sort = 2
+	</select>
+	
+	<!-- 해당 과목을 듣고 있는 모든 학생들의 리스트를 불러오는 메서드 -->
+	<select id="selectAllMyStudent" parameterClass="String" resultClass="ClassStudentVO">
+		select * from CLASS_STUDENT where SUB_NUM = #data#
+	</select>
+	
+	<!-- 과제(TASK)를 등록하는 메서드 -->
+	<insert id="insertTaskp" parameterClass="TaskVO">
+		insert into TASK values (SEQ_TASK.NEXTVAL, #task_name#, sysdate + to_number(#task_date#), #task_cont#, #task_score#, #task_chk#, #sub_num#)
+	</insert>
+	
+	<!-- 상단의 과제를 모든 학생의 memID를 넣어 task_submit 에 등록하는 메서드 -->
+	<insert id="insertTasks" parameterClass="Task_submitVO">
+		insert into TASK_SUBMIT values 
+		(SEQ_TASK_SUBMIT.NEXTVAL, #task_name#, sysdate + to_number(#task_date#), #task_cont#, 
+		#task_score#, #task_chk#, #sub_num#, #task_title#, #mem_id#, #path#, #task_comt#)
+	</insert>
+	
+	<!-- 학생의 학적을 조회할수 있는 메서드 -->
+	<select id="studentList" resultClass="ManagStudentVO">
+	
+	select * from STUDENT B, MANAGEMENT C
+          where C.MEM_ID=B.MEM_ID
+	</select>
+	
+	<!-- 공지사항 등록 메서드 -->
+	<insert id="insertNotice" parameterClass="BoardVO">
+		insert into BOARD values
+		(SEQ_QNABOARD.NEXTVAL, #board_writer#, #board_cont#, sysdate, #board_title#, 2, #class_num#, #mem_id#)
+	</insert>
+	
+	<!-- 공지사항 수정 메서드 -->
+	<update id="modifyPQna" parameterClass="BoardVO">
+		update BOARD set BOARD_TITLE = #board_title#, BOARD_CONT = #board_cont# where BOARD_NUM = #board_num#
+	</update>
+	
+	<!-- 공지사항 삭제 메서드 -->
+	<delete id="deletePQna" parameterClass="String">
+		delete from BOARD where BOARD_NUM = #board_num#
+	</delete>	
+	
+	<!-- 과목 개설 메서드 -->
+	<insert id="insertSubject" parameterClass="SubjectVO">
+		insert into SUBJECT values (#sub_num#, #sub_name#, #sub_cnt#, #mem_id#, #status#)
+	</insert>
+	
+	<!-- status가 수강대기인 과목개설 조회 -->
+	<select id="selectInSubject" parameterClass="String" resultClass="SubjectVO">
+		select * from SUBJECT where STATUS = #status#
+	</select>
+	
+	<!-- 과목개설 삭제 -->
+	<delete id="deleteSubject" parameterClass="SubjectVO">
+		delete from SUBJECT where SUB_NUM = #sub_num# and STATUS = #status#
+	</delete>
+	
+	<!-- 학생관리 페이지에서 학생조회 SQL -->
+	<select id="selectManageStudents" parameterClass="String" resultClass="MemberVO">
+		        select A.* 
+          from MEMBER A, STUDENT B, CLASS_STUDENT C, SUBJECT D 
+         where A.MEM_ID = B.MEM_ID 
+           and B.MEM_ID = C.MEM_ID
+           and C.SUB_NUM = D.SUB_NUM
+           and D.SUB_NAME = #data#
+	</select>
+	
+	<!-- 해당 강의에 출석부 불러오기 -->
+	<select id="selectClaChk" parameterClass="TempClass_chkVO" resultClass="TempClass_chkVO">
+		           select A.*, B.MEM_NAME from CLASS_CHK A, MEMBER B where A.MEM_ID = B.MEM_ID and CLASS_NUM = #class_num#
+	</select>
+	
+	<!-- 과제 체크 리스트 불러오기 -->
+	<select id="selectTasks" parameterClass="String" resultClass="TempTask_submitVO">
+		   select A.*, B.MEM_NAME from TASK_SUBMIT A, MEMBER B where A.MEM_ID = B.MEM_ID and TASK_CHK = 'Y' and TASK_SCORE = 'N' and SUB_NUM = #sub_num#
+
+	</select>
+	
+	<!-- 과제 평가후 점수 부여하기 -->
+	<update id="TaskScore" parameterClass="Task_submitVO" >
+		update TASK_SUBMIT set TASK_SCORE = #task_score# where TASK_NUM = #task_num#
+	</update>
+	
+	<!-- 최종 성적이 부여되지 않은 학생들 조회하기 -->
+	<select id="needScoreStudent" parameterClass="String" resultClass="TempClassStudentVO">
+		select A.*, B.MEM_NAME, C.SUB_NAME from CLASS_STUDENT A, MEMBER B, SUBJECT C where A.MEM_ID = B.MEM_ID and B.SUB_NUM = C.SUB_NUM and A.SUB_NUM = #data# and A.SUB_SCORE = 0
+	</select>
+	
+	<!-- 학생에게 최종 성적 부여하기 -->
+	<update id="insertScore" parameterClass="String">
+		update CLASS_STUDENT set SUB_SCORE = #sub_score# where MEM_ID = #mem_id#
+	</update>
+	
+	
+	<!-- 교수관련부분=============================================================================  -->
+	
+
+	
+
+
+
+</sqlMap>

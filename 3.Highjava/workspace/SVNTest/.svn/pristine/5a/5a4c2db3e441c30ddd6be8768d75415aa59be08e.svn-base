@@ -1,0 +1,11 @@
+package kr.or.ddit.basic;
+
+public class D1 {
+	public static void main(String[] args) {
+		System.out.println("test");
+		System.out.println("qorhvk");
+		System.out.println("nemui");
+		System.out.println("수정~~");
+	}
+
+}

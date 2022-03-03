@@ -1,0 +1,40 @@
+package kr.or.ddit.psj.controller;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import kr.or.ddit.dcum.vo.TaskVO;
+import kr.or.ddit.psj.service.ClassServiceimpl;
+
+
+@WebServlet("/insertTask.do")
+public class insertTask extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		ClassServiceimpl service = ClassServiceimpl.getInstance();
+		TaskVO vo = new TaskVO(); 
+		String title = request.getParameter("title");
+		String cont = request.getParameter("cont");
+		String file = request.getParameter("file");
+		String subname = request.getParameter("subname");
+		
+		vo.setTask_name(title);
+		vo.setTask_cont(cont);
+		vo.setSub_num(subnum);
+		vo.setTask_score("제출");
+		vo.setTask_chk("Y");
+		
+		service.insertTask(vo);
+		
+		response.sendRedirect("<%=request.getContextPath()%>/work_psj/homework/index.jsp");
+
+	}
+
+}

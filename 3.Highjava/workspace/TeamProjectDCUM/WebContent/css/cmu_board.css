@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+#p1{
+	text-decoration: underline;	
+}
+
+#no {
+	width: 10%;
+	text-align: center;
+}
+
+#title {
+	width: 45%;
+	text-align: center;
+}
+
+#sort {
+	width: 20%;
+	text-align: center;
+}
+
+#date {
+	text-align: center;
+}
+
+#search {
+	flex:1;
+	display: inline-block;
+}
+
+#selectBox {
+     width: 25%;
+}
+
+#sort-form{
+    display: inline-block;
+    width: 500px;
+}
+.form-control{
+	display: inline-block;
+	width: 80%;
+	vertical-align: middle;
+}
+#title-aTag{
+	color : black;
+}
+

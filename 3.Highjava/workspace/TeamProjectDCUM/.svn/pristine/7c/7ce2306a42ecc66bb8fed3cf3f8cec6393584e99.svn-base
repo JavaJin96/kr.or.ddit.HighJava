@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apach.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="project">
+
+	<!-- 공지 리스트 -->
+	<select id="getAllGongji" resultClass="gongjiVo">
+		select gongji_num, gongji_nm, TO_CHAR(gongji_date, 'yyyy-MM-dd HH:mm') as gongji_date
+		  from gongji order by gongji_num desc 
+	</select>
+	
+	<!-- 공지 선택 -->
+	<select id="selectGongji" resultClass="gongjiVo" parameterClass="string">
+		select gongji_num, gongji_nm, TO_CHAR(gongji_date, 'yyyy-MM-dd HH:mm') as gongji_date, gongji_cont
+		  from gongji where gongji_num = #gongji_num#
+	</select>
+	
+	<!-- 공지 작성 -->
+	<insert id="insertGongji" parameterClass="gongjiVo"> 
+ 		insert into gongji (gongji_num, gongji_nm, gongji_cont, gongji_date) values (gongji_seq.nextval, #gongji_nm#,  #gongji_cont#, TO_CHAR(sysdate, 'yyyy-MM-dd')) 
+ 		<selectKey resultClass="int"> 
+ 			select gongji_seq.currval from dual 
+ 		</selectKey> 
+ 	</insert>
+	
+	<!-- 공지 수정 -->
+	<update id="updateGongji" parameterClass="gongjiVo">
+ 		update gongji set gongji_nm = #gongji_nm#, gongji_cont = #gongji_cont# where gongji_num = #gongji_num#
+ 	</update>
+	
+	<!-- 공지 삭제 -->
+	<delete id="deleteGongji" parameterClass="String">
+ 		delete from gongji where gongji_num = #gongji_num#
+ 	</delete>
+ 	
+ 	<!-- 공지 검색 -->
+ 	<select id="searchGongji" resultClass="gongjiVo" parameterClass="String">
+ 		select gongji_num, gongji_nm, gongji_date from gongji where gongji_nm like '%' || #gongji_nm# || '%' order by gongji_num desc
+ 	</select>
+</sqlMap>

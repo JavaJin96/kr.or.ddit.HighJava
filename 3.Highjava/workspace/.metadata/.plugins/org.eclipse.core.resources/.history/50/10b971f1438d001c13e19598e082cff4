@@ -1,0 +1,198 @@
+package kr.or.ddit.psj.service;
+
+import java.util.List;
+import java.util.Map;
+
+import kr.or.ddit.dcum.vo.BoardVO;
+import kr.or.ddit.dcum.vo.Board_ReplyVO;
+import kr.or.ddit.dcum.vo.ClassStudentVO;
+import kr.or.ddit.dcum.vo.ClassVO;
+import kr.or.ddit.dcum.vo.GongjiVO;
+import kr.or.ddit.dcum.vo.SubjectVO;
+import kr.or.ddit.dcum.vo.TaskVO;
+import kr.or.ddit.dcum.vo.Task_submitVO;
+import kr.or.ddit.dcum.vo.TempBoardVO;
+import kr.or.ddit.dcum.vo.TempTaskVO;
+import kr.or.ddit.psj.dao.ClassDaoimpl;
+
+public class ClassServiceimpl implements IClassService {
+	
+	private static ClassServiceimpl service;
+	private ClassDaoimpl dao;
+	
+	public ClassServiceimpl() {
+		dao = ClassDaoimpl.getInstance();
+	}
+	
+	public static ClassServiceimpl getInstance() {
+		if(service == null) service = new ClassServiceimpl();
+		return service;
+	}
+
+	@Override
+	public List<SubjectVO> selectAllMySubject(String id) {
+		return dao.selectAllMySubject(id);
+	}
+
+	@Override
+	public List<ClassVO> selectClass(String subnum) {
+		return dao.selectClass(subnum);
+	}
+
+	@Override
+	public SubjectVO selectAllMySubjectVO(String id) {
+		return dao.selectAllMySubjectVO(id);
+	}
+
+	@Override
+	public List<GongjiVO> selectNotice() {
+		return dao.selectNotice();
+	}
+
+	@Override
+	public SubjectVO selectOneSubjectForName(String subname) {
+		return dao.selectOneSubjectForName(subname);
+	}
+
+	@Override
+	public ClassVO selectClassByName(String classname) {
+		return dao.selectClassByName(classname);
+	}
+
+	@Override
+	public List<SubjectVO> selectSubjectListPro(String memid) {
+		return dao.selectSubjectListPro(memid);
+	}
+
+	@Override
+	public int insertClass(ClassVO vo) {
+		return dao.insertClass(vo);
+	}
+
+	@Override
+	public List<BoardVO> selectClassNotice() {
+		return dao.selectClassNotice();
+	}
+
+	@Override
+	public List<TempBoardVO> selectAllMyClassNotice(String mem_id) {
+		return dao.selectAllMyClassNotice(mem_id);
+	}
+
+	@Override
+	public List<BoardVO> selectAllClassNoticeBysn(String subname) {
+		return dao.selectAllClassNoticeBysn(subname);
+	}
+
+	@Override
+	public List<BoardVO> selectAllQna() {
+		return dao.selectAllQna();
+	}
+
+	@Override
+	public List<SubjectVO> selectAllMySubject2(String id) {
+		return dao.selectAllMySubject2(id);
+	}
+
+	@Override
+	public int insertQna(BoardVO vo) {
+		return dao.insertQna(vo);
+	}
+
+	@Override
+	public int insertQnaRe(Board_ReplyVO vo) {
+		return dao.insertQnaRe(vo);
+	}
+
+	@Override
+	public List<Board_ReplyVO> selectBoardReply(String boardnum) {
+		return dao.selectBoardReply(boardnum);
+	}
+
+	@Override
+	public List<BoardVO> selectInclassBoard(String classnum) {
+		return dao.selectInclassBoard(classnum);
+	}
+
+	@Override
+	public int deleteQna(String boardnum) {
+		return dao.deleteQna(boardnum);
+	}
+
+	@Override
+	public List<TempBoardVO> selectAllMyNotice(String memid) {
+		return dao.selectAllMyNotice(memid);
+	}
+
+	@Override
+	public int modifyQna(BoardVO vo) {
+		return dao.modifyQna(vo);
+	}
+
+	@Override
+	public List<SubjectVO> selectClaComent(Map<String, String> map) {
+		return dao.selectClaComent(map);
+	}
+
+	@Override
+	public void submitComent(Map<String, String> map) {
+		 dao.submitComent(map);
+		
+	}
+
+	@Override
+	public List<TempTaskVO> selectAllMyTask(TempTaskVO vo) {
+		return dao.selectAllMyTask(vo);
+	}
+
+	@Override
+	public void submitTask(Task_submitVO vo) {
+		dao.submitTask(vo);
+		
+	}
+
+	@Override
+	public List<ClassStudentVO> selectAllMyStudent(String subnum) {
+		return dao.selectAllMyStudent(subnum);
+	}
+
+	@Override
+	public void insertTaskp(TaskVO vo) {
+		dao.insertTaskp(vo);
+		
+	}
+
+	@Override
+	public void insertTasks(Task_submitVO vo) {
+		dao.insertTasks(vo);
+		
+	}
+
+	@Override
+	public List<BoardVO> selectAllClassNoticeBysn2(String classnum) {
+		return dao.selectAllClassNoticeBysn2(classnum);
+	}
+
+	@Override
+	public void insertNotice(BoardVO vo) {
+		dao.insertNotice(vo);
+	}
+
+	@Override
+	public void modifyPQna(BoardVO vo) {
+		dao.modifyPQna(vo);
+	}
+
+	@Override
+	public void deletePQna(String bnum) {
+		dao.deletePQna(bnum);
+	}
+
+	@Override
+	public void insertSubject(SubjectVO vo) {
+		dao.insertSubject(vo);
+	}
+
+
+
+}

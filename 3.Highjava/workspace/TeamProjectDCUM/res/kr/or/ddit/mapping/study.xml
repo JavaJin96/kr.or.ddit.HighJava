@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apach.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="project">
+	<!-- 스터디 전체 게시글 리스트 -->
+	<select id="getAllStudy" resultClass="studyVo">
+		select sb_num, sb_title, sb_writer, TO_CHAR(sb_date, 'yyyy-MM-dd HH24:mi') as sb_date, sb_sort from study_board order by sb_num desc
+	</select>
+	
+	<!-- 스터디 선택 -->
+	<select id="selectStudy" resultClass="studyVo" parameterClass="string">
+		select sb_num, sb_title, sb_writer, sb_cont, total_cnt, (select count(sb_num) from study_apply where sb_num = #sb_num#) as current_cnt,
+		mem_id, TO_CHAR(sb_date, 'yyyy-MM-dd HH24:mi') as sb_date, sb_sort from study_board where sb_num = #sb_num#
+	</select>
+	
+	<!-- 스터디 작성 -->
+	<insert id="insertStudy" parameterClass="studyVo"> 
+ 		insert into study_board (sb_num, sb_title, sb_writer, sb_cont, total_cnt, current_cnt, mem_id, sb_date, sb_sort)
+ 			   values (study_seq.nextval, #sb_title#, #sb_writer#, #sb_cont#, #total_cnt#, 0, #mem_id#,sysdate, #sb_sort#)
+									  <!--, #mem_id#, #cmu_sort# -->
+ 		<selectKey resultClass="int"> 
+ 			select study_seq.currval from dual 
+ 		</selectKey> 
+ 	</insert>
+	
+	<!-- 스터디 수정 -->
+	<update id="updateStudy" parameterClass="studyVo">
+ 		update study_board set sb_title = #sb_title#, sb_writer = #sb_writer#, sb_cont = #sb_cont#, 
+ 								total_cnt = #total_cnt#,  sb_sort = #sb_sort#
+ 						where sb_num = #sb_num#
+ 	</update>
+	
+	<!-- 스터디 삭제 -->
+	<delete id="deleteStudy" parameterClass="String">
+ 		delete from study_board where sb_num = #sb_num#
+ 	</delete>
+ 	
+ 	<!-- 스터디 검색 -->
+	<select id="searchStudy" resultClass="studyVo" parameterClass="String">
+		select sb_num, sb_sort, sb_title, sb_writer, sb_date from study_board 
+			where sb_title like '%' || #sb_title# || '%' order by sb_num desc
+	</select>
+	
+	<!-- 스터디 말머리 검색 -->
+	<select id="sortStudy" resultClass="studyVo" parameterClass="String">
+		select sb_num, sb_sort, sb_title, sb_writer, sb_date from study_board where sb_sort = #sb_sort# order by sb_num desc
+	</select>
+	
+	<!-- 스터디 참여 목록 -->
+<!-- 	<select id="getStudyStudent" resultClass="studyApplyVo"> -->
+<!-- 		select b.total_cnt, b.current_cnt, c.mem_name, c.mem_gender, e.dep_name -->
+<!-- 			   from study_apply a -->
+<!-- 			   left outer join study_board b on a.sb_num = b.sb_num -->
+<!-- 			   left outer join member c on b.mem_id = c.mem_id -->
+<!-- 			   left outer join student d on c.mem_id = d.mem_id -->
+<!-- 			   left outer join department e on d.dep_num = e.dep_num -->
+<!-- 	</select> -->
+	
+	<select id="getStudyStudent" resultClass="studyApplyVo" parameterClass="String">
+		select mem_id, mem_name, mem_gender from study_apply where sb_num = #sb_num#
+	</select>
+	
+ 	<!-- 스터디 예약 -->
+	<insert id="insertApply" parameterClass="studyApplyVo">
+		insert into study_apply values(#sb_num#, #mem_id#, #mem_name#, #mem_gender#)
+	</insert>
+	
+	<!-- 스터디 예약 취소 -->
+	<delete id="deleteApply">
+		delete from study_apply where mem_id = #mem_id#
+	</delete>
+	
+	<!-- 스터디 예약 현재인원 증가 -->
+	<update id="updateCcnt">
+		update study_board set current_cnt = (select count(sb_num) from study_apply where sb_num = #sb_num#)
+			where sb_num = #sb_num#
+	</update>
+	
+</sqlMap>

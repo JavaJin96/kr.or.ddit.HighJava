@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+ #sp{
+ 	color: white;
+ }
+
+ #d6 {
+ width : 600px;
+ height :50px;
+ }
+ 
+ 
+ .container{
+ width: 880px;
+ height: 50px;
+ float: left;
+ } 
+ .bbshCont{
+ 	border: 1px solid black;
+	width: 1000px;
+	height: 1000px;
+ 	float: left;
+ }
+ #d1{
+   height: 1000px;
+ }
+ #tab1{
+ width: 100%;
+ height: 200px;
+ 
+ }
+ #tab2{
+  width: 100%;
+ height: 200px;
+ }
+  <!-- 새로만든 div -->
+  #view2{
+	border: 1px solid black;
+	width: 600px;
+	height: 300px;
+ }

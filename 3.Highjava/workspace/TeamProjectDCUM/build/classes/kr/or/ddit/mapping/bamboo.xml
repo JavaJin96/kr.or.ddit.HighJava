@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apach.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="project">
+	
+	<!-- 게시글 리스트 -->
+	<select id="getAllBamboo" resultClass="bambooVo">
+		select sec_num, sec_title, TO_CHAR(sec_date, 'yyyy-MM-dd HH24:mi') as sec_date from bamboo order by sec_num desc
+	</select>
+	
+	<!-- 게시글 선택 -->
+	<select id="selectBamboo" resultClass="bambooVo" parameterClass="string">
+		select sec_num, sec_title, TO_CHAR(sec_date, 'yyyy-MM-dd HH24:mi') as sec_date, sec_cont, mem_id from bamboo where sec_num = #sec_num#
+	</select>
+
+	<!-- 게시글 작성 -->
+ 	<insert id="insertBamboo" parameterClass="bambooVo"> 
+ 		insert into bamboo values (bamboo_seq.nextval, #sec_cont#, sysdate, #sec_title#, #sec_writer#, #mem_id#) 
+ 		<selectKey resultClass="int"> 
+ 			select bamboo_seq.currval from dual 
+ 		</selectKey> 
+ 	</insert>
+ 	
+ 	<!-- 게시글 수정 -->
+ 	<update id="updateBamboo" parameterClass="bambooVo">
+ 		update bamboo set sec_title = #sec_title#, sec_cont = #sec_cont#, sec_writer = #sec_writer# where sec_num = #sec_num#
+ 	</update>
+ 	
+ 	<!-- 게시글 삭제 -->
+ 	<delete id="deleteBamboo" parameterClass="String">
+ 		delete from bamboo where sec_num = #sec_num#
+ 	</delete>
+ 	
+ 	<!-- 게시글 검색 -->
+ 	<select id="searchBamboo" resultClass="bambooVo" parameterClass="String">
+		select * from bamboo where sec_cont like '%' || #sec_cont# || '%' order by sec_num desc
+	</select>
+ 	
+ 	<!-- ================================================================================================== -->
+ 	
+ 	
+ 	<!-- 댓글 리스트 -->
+ 	<select id="getAllReBamboo" resultClass="rebambooVo" parameterClass="String">
+ 		select * from bam_reply where sec_num = #sec_num#
+ 	</select>
+ 	
+ 	<!-- 댓글 선택 -->
+ 	<select id="selectReBamboo" resultClass="rebambooVo" parameterClass="String">
+ 		select * from bam_reply where sec_re_num = #sec_re_num#
+ 	</select>
+ 	
+ 	<!-- 댓글 작성 -->
+ 	<insert id="insertReBamboo" parameterClass="rebambooVo">
+ 		insert into bam_reply values(bam_reply_seq.nextval, #sec_re_writer#, #sec_re_cont#, sysdate, #sec_num#, #mem_id#)
+ 		<selectKey resultClass="int">
+ 			select bam_reply_seq.currval from dual 
+ 		</selectKey>
+ 	</insert>
+ 	
+ 	<!-- 댓글 수정 -->
+ 	<update id="updateReBamboo" parameterClass="rebambooVo">
+ 		update bam_reply set sec_re_writer = #sec_re_writer#, sec_re_cont = #sec_re_cont# where sec_re_num = #sec_re_num#
+ 	</update>
+
+	<!-- 댓글 삭제 -->
+	<delete id="deleteReBamboo" parameterClass="String">
+		delete from bam_reply where sec_re_num = #sec_re_num#
+	</delete>
+	
+</sqlMap>

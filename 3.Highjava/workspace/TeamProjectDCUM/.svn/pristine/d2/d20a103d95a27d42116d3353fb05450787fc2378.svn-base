@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="member">
+	
+<!-- 공통 -->
+	<!-- 로그인 (파라미터 : 아이디,비밀번호) -->
+	<select id="loginChk" parameterClass="Map" resultClass="MemberVO">
+		select DISTINCT  * from member 
+		where mem_id = #mem_id# 
+		  and mem_pass=#mem_pass#
+	</select>
+		
+	<!-- 비밀번호 찾기 : 본인 생일로 비번 초기화 ( 파라미터 : 아이디 , 메일) -->
+	<update id="resetPass" parameterClass="Map" >
+		update member 
+		set
+		mem_pass = (select mem_bir from member where mem_id = #mem_id#)
+		where mem_id = #mem_id# and mem_mail=#mem_mail#
+	</update>
+	
+	<!-- 비밀번호 변경 (파라미터 : 아이디 ,변경할비밀번호) -->
+	<update id="updatePass" parameterClass="Map" >
+		update member 
+		set
+		mem_pass = #mem_pass#
+		where mem_id = #mem_id# 
+	</update>
+	
+	
+<!-- 교수 -->	
+	<!-- 교수 학과정보 추출 -->
+	<select id="ProDepInfo" parameterClass="String" resultClass="String">
+		select distinct DEP_NAME 
+		from DEPARTMENT a 
+		join PROFESSOR b on a.DEP_NUM=b.DEP_NUM
+		where b.mem_id=#mem_id# 
+	</select>
+
+<!-- 학생 -->	
+	<!-- 학생개인정보 변경 (파라미터 : 아이디 / 변경되는값 : 주소,메일,핸드폰번호)  -->
+	<update id="updateStudent" parameterClass="MemberVO" >
+		update member 
+		set
+		mem_add = #mem_add#,
+		mem_mail = #mem_mail#,
+		mem_hp = #mem_hp#
+		where mem_id = #mem_id# 
+	</update>
+
+	<!-- 학생정보추출  -->
+	<select id="studentAllInfo" parameterClass="String" resultClass="StudentInfoVO">
+		select DISTINCT * from member a
+		left join student b on a.mem_id=b.mem_id
+		left join DEPARTMENT c on b.DEP_NUM=c.DEP_NUM
+		left join MANAGEMENT d on a.mem_id=d.mem_id
+		where a.mem_id =#mem_id# 
+	</select>
+
+	
+
+<!-- 대관신청 -->
+	
+	<!-- 해당날짜/룸번호에 예약된 시간 리스트 -->	
+	<select id="searchRoomrent" parameterClass="Map" resultClass="RentVO">
+		select * from rent 
+   		<![CDATA[where to_char(rent_date, 'yyyy-mm-dd')= #rent_date#]]>
+        and rent_num = #rent_num#
+	</select>
+	
+	<!-- 스터디룸 예약하기 -->	
+	<insert id="insertRoomrent" parameterClass="RentVO" >
+		insert into rent
+		values
+		(#rent_num#,#rent_time#,rent_pk_seq.nextval,#rent_date#,#rent_count#,#mem_id#)
+		<selectKey keyProperty="rent_pk" resultClass="int">
+			select rent_pk_seq.currval from dual
+		</selectKey>	
+	</insert>
+
+	<!-- 열람실 예약하기-->	
+	<insert id="insertSeatrent" parameterClass="SeatVO" >
+		insert into seat
+		values
+		(#seat_num#,sysdate,sysdate+2/24,#mem_id#,#seat_chk#)
+	</insert>
+	
+	<!-- 열람실 시간연장 -->
+	<update id="updateSeat" parameterClass="Map">
+		update seat
+		set 
+		start_time = sysdate,
+		end_time = sysdate+2/24
+		where mem_id=#mem_id#
+		and seat_num=#seat_num#
+	</update>
+	
+	<!-- 회원별 예약현황_스터디룸 -->
+	<select id="selectRoomById" parameterClass="String" resultClass="ReservationVO" >
+		select 
+		rent_num,
+		rent_time,
+		rent_pk,
+		<![CDATA[to_char(rent_date,'yyyy-mm-dd') as rent_date,]]>
+		rent_count,
+		mem_id
+		from rent
+		where mem_id=#mem_id#
+	</select>
+	
+	<!-- 회원별 스터디룸예약 삭제 -->
+	<delete id="deleteRoom" parameterClass="Map">
+		delete from rent
+		where mem_id = #mem_id#
+		and rent_num =#rent_num#
+	</delete>
+	
+	<!-- 회원별 예약현황_열람실 -->
+	<select id="selectSeatById" parameterClass="String" resultClass="ReservationVO" >
+		 select * from seat 
+ 		 where mem_id=#mem_id#
+	</select>
+	
+	<!-- 열람실 예약현황 -->
+	<select id="searchSeatrent" resultClass="SeatVO">
+		select * from seat
+	</select>
+	
+	<!-- 열람실 좌석예약 삭제 -->
+	<delete id="deleteSeat" parameterClass="Map">
+		delete from seat
+		where mem_id = #mem_id#
+		and seat_num =#seat_num#
+	</delete>
+	
+	
+	<!-- 	(검색조건) 다른 sql문에서 공통으로 사용할 수 있는 문장  -->
+	<sql id="dynamicCondition_Seat">
+		<dynamic prepend="where">
+			<isNotEmpty property="stype" prepend="and">
+				<isNotEmpty property="sword">
+					$stype$ like '%'||#sword#||'%'
+				</isNotEmpty>
+			</isNotEmpty>			
+		</dynamic>
+	</sql>
+	
+
+	
+	<insert id="insertStatus" parameterClass="String">
+		insert into MANAGEMENT
+		(MEM_ID, STATUS, TOTAL_SCORE)
+		values
+		(#mem_id#,'재학',0)
+	</insert>
+	
+		<!-- 전체학생정보 리스트  -->
+	<select id="allStudentList" resultClass="StudentInfoVO">
+		select DISTINCT * from member a
+		left join student b on a.mem_id=b.mem_id
+		left join DEPARTMENT c on b.DEP_NUM=c.DEP_NUM
+		left join MANAGEMENT d on a.mem_id=d.mem_id
+	</select>
+	
+	<!-- 학생아이디로 검색한 해당학과 교수 이름 -->
+	<select id="findProfessor" parameterClass="String" resultClass="MemberVO">
+	select *
+	from member a ,(select * from PROFESSOR b
+	where b.DEP_NUM = (select DEP_NUM from student c where
+	c.mem_id=#mem_id#))d
+	where a.mem_id=d.mem_id
+	</select>
+	
+	<!-- 재학상태변경 -->
+	<update id="updateStatus" parameterClass="Map">
+		update management
+		set
+		status = #status#
+		where mem_id= #mem_id#
+	</update>
+	
+	<!-- 학적변동 요청 학생추출 -->
+	<select id="statusChangeList" resultClass="StudentInfoVO">
+	select *
+	from member a ,
+	<![CDATA[
+	(select * from management b where status like '%신청')b]]>
+	where a.mem_id=b.mem_id
+	</select>
+	
+	<!-- 교수정보(member,department,professor 조인(단순조회) -->
+	<select id="printProAllInfo" resultClass="Temp_ProfessorVO">
+	select * from member a ,
+	( select *
+	from DEPARTMENT b
+	join PROFESSOR c on b.DEP_NUM = c.DEP_NUM)d
+	where a.mem_id=d.mem_id
+	</select>
+	
+	<!-- 게시글관리 -->
+	<select id="selectMyBoard" parameterClass="String" resultClass="commuVo">
+	select
+	cmu_num,
+	cmu_writer,
+	cmu_cont,
+	<![CDATA[to_char(cmu_date,'yyyy/mm/dd') as cmu_date,]]>
+	cmu_title,
+	mem_id,
+	cmu_sort
+	from COMMUNITY
+	where mem_id = #mem_id#
+	</select>
+	
+	<!-- 메일 -->
+	<select id="findNameById" parameterClass="String" resultClass="String">
+		select mem_name from member 
+		where mem_id=#mem_id#	
+	</select>
+</sqlMap>	
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,8 @@
+package kr.or.ddit.dcum.vo;
+
+public class TempCSVO {
+	private String mem_id  ;
+	private String sub_num ;
+	private String sub_score;
+	private String mem_name ;
+}  

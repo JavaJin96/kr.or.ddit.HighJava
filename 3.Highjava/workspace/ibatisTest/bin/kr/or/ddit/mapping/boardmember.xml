@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.spache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+	
+<sqlMap namespace="boardmember">
+<!-- <typeAlias alias="" type=""/>  
+	config에 기술한 alias를 쿼리문이 작성되는 xml파일에서 이곳에 기술하여 사용할 수도 있다.
+-->
+
+<insert id="insertBoard" parameterClass="BoardMemberVO">
+	insert into JDBC_BOARD (BOARD_NO, BOARD_TITLE, BOARD_WRITER, BOARD_DATE, BOARD_CNT, BOARD_CONTENT)
+	 values (board_seq.NEXTVAL, #board_title#, #board_writer#, sysdate, 0, #board_content#)
+</insert>
+
+
+<delete id="deleteBoard" parameterClass="int">
+	delete from JDBC_BOARD where BOARD_NO = #board_no#
+</delete>
+
+
+<update id="updateBoard" parameterClass="BoardMemberVO">
+	update JDBC_BOARD set BOARD_TITLE = #board_title#, BOARD_CONTENT = #board_content# where BOARD_NO = #board_no#
+</update>
+
+
+<!-- map의 key  field = title, writer, content / data / board_no--> 
+<update id="updateBoard2" parameterClass="Map">
+	update JDBC_BOARD set $field$ = #data# where #board_no#
+</update>
+
+
+<select id="selectBoard" resultClass="BoardMemberVO">
+	select * from JDBC_BOARD order by 1 desc
+</select>
+
+
+<select id="selectBoardDetail" resultClass="BoardMemberVO" parameterClass="int">
+	select * from JDBC_BOARD where BOARD_NO = #board_no#
+</select>
+
+
+<select id="getcnt" parameterClass="int" resultClass="int">
+	select BOARD_CNT from JDBC_BOARD where BOARD_NO = #board_no#
+</select>
+
+
+<update id="setcnt" parameterClass="BoardMemberVO">
+	update JDBC_BOARD set BOARD_CNT = #board_cnt# where BOARD_NO = #board_no#
+</update>
+
+
+<select id="search" parameterClass="String" resultClass="BoardMemberVO">
+	select * from JDBC_BOARD where BOARD_TITLE like #board_title#
+</select>
+
+
+</sqlMap>

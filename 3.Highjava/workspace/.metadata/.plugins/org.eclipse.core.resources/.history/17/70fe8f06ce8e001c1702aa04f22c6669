@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig
+   PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig> 
+   <!-- 
+      DB와 연결하는 정보를 Properties 파일에 설정해 놓고 
+      이 properties 파일의 내용을 읽어올 수 있도록 경로를 설정한다.
+    -->
+   <properties resource="kr/or/ddit/config/dbinfo.properties"/>
+   
+   <!-- 
+      각각의 sqlMap파일(SQL 문이 작성된 파일)의 namespace속성값과 id 속성값을 연결해서
+      실행할 쿼리문을 선택한다.
+   --> 
+   <settings useStatementNamespaces="true"/> 
+   
+   
+   <!-- 
+      쿼리문에 사용할 VO객체는 패키지 이름을 포함한 전체 이름을 사용해야하는데
+      그렇게 되면 문장이 너무 길어질 수 있다. 그래서 전체 이름을 대신해서 사용할
+      alias를 설정할 수 있다.
+      
+      형식) <typeAlias alias="alias명" type="클래스의 풀네임"/>
+    -->
+    
+    <!--    
+    <typeAlias alias="MemberVO" type="kr.or.ddit.member.vo.MemberVO"/>
+    -->
+    
+    <typeAlias alias="MemberVO" type="kr.or.ddit.dcum.vo.MemberVO"/>
+    
+    <typeAlias alias="EmployeeVO" type="kr.or.ddit.dcum.vo.EmployeeVO"/>
+    
+    <typeAlias alias="ProfessorVO" type="kr.or.ddit.dcum.vo.ProfessorVO"/>
+    
+    <typeAlias alias="StudentVO" type="kr.or.ddit.dcum.vo.StudentVO"/>
+    
+    <typeAlias alias="ClassVO" type="kr.or.ddit.dcum.vo.ClassVO"/>
+    
+    <typeAlias alias="SubjectVO" type="kr.or.ddit.dcum.vo.SubjectVO"/> 
+    
+     <typeAlias alias="ClassStudentVO" type="kr.or.ddit.dcum.vo.ClassStudentVO"/>
+     
+    <typeAlias alias="GongjiVO" type="kr.or.ddit.dcum.vo.GongjiVO"/>
+    
+    <typeAlias alias="bambooVo" type="kr.or.ddit.dcum.vo.BambooVO"/>
+    
+    <typeAlias alias="rebambooVo" type="kr.or.ddit.dcum.vo.BambooReplyVO"/>
+    
+    <typeAlias alias="commuVo" type="kr.or.ddit.dcum.vo.CommunityVO"/>
+	 
+	<typeAlias alias="recommuVo" type="kr.or.ddit.dcum.vo.CommuReplyVO"/>
+	 
+	<typeAlias alias="studyVo" type="kr.or.ddit.dcum.vo.StudyVO"/>
+	
+	<typeAlias alias="studyApplyVo" type="kr.or.ddit.dcum.vo.StudyApplyVO"/>
+    
+    <typeAlias alias="BoardVO" type="kr.or.ddit.dcum.vo.BoardVO"/>
+    
+    <typeAlias alias="TempBoardVO" type="kr.or.ddit.dcum.vo.TempBoardVO"/>
+    
+    <typeAlias alias="Board_ReplyVO" type="kr.or.ddit.dcum.vo.Board_ReplyVO"/>
+   
+    <typeAlias alias="gongjiVo" type="kr.or.ddit.dcum.vo.GongjiVO"/>
+    
+    <typeAlias alias="StudentInfoVO" type="kr.or.ddit.dcum.vo.temp_StudentInfoVO"/>
+
+   	<typeAlias alias="ManagStudentVO" type="kr.or.ddit.dcum.vo.ManagStudentVO"/>
+   	
+   	<typeAlias alias="MessageVO" type="kr.or.ddit.dcum.vo.MessageVO"/>
+   	
+   	<typeAlias alias="RentVO" type="kr.or.ddit.dcum.vo.RentVO"/>
+   	
+   	<typeAlias alias="SeatVO" type="kr.or.ddit.dcum.vo.SeatVO"/>
+   	
+   	<typeAlias alias="TaskVO" type="kr.or.ddit.dcum.vo.TaskVO"/>
+   	   	
+   	<typeAlias alias="ReservationVO" type="kr.or.ddit.dcum.vo.Temp_ReservationVO"/>
+   	
+   	<typeAlias alias="Task_submitVO" type="kr.or.ddit.dcum.vo.Task_submitVO"/>
+   	
+   	<typeAlias alias="TempTaskVO" type="kr.or.ddit.dcum.vo.TempTaskVO"/>
+   	
+   	<typeAlias alias="Class_chkVO" type="kr.or.ddit.dcum.vo.Class_chkVO"/>
+   	
+   	<typeAlias alias="TempClass_chkVO" type="kr.or.ddit.dcum.vo.TempClass_chkVO"/>
+   	
+   	<typeAlias alias="TempTask_submitVO" type="kr.or.ddit.dcum.vo.TempTask_submitVO"/>
+   	
+   	<typeAlias alias="TempClassStudentVO" type="kr.or.ddit.dcum.vo.TempClassStudentVO"/>
+   	
+   	<typeAlias alias="studyApplyVo" type="kr.or.ddit.dcum.vo.StudyApplyVO"/>
+   	
+   	<typeAlias alias="Temp_ProfessorVO" type="kr.or.ddit.dcum.vo.Temp_ProfessorVO"/>
+   	
+   	<typeAlias alias="TestVO" type="kr.or.ddit.dcum.vo.TestVO"/>
+   	
+   	<typeAlias alias="TempTestVO" type="kr.or.ddit.dcum.vo.TempTestVO"/>
+   	
+   	
+   <!-- 
+      DB와 연결을 처리하는 부분
+    -->
+   <transactionManager type="JDBC">
+      <dataSource type="SIMPLE">
+         <property name="JDBC.Driver" value="${driver}"/>
+         <property name="JDBC.ConnectionURL" value="${url}"/>
+         <property name="JDBC.Username" value="${user}"/>
+         <property name="JDBC.Password" value="${pass}"/>
+      </dataSource>
+   </transactionManager>
+   
+   <!-- 실행할 SQL문 등록하기 -->
+   
+   <!-- 
+       실행할 SQL문을 xml 문서로 따로 작성한후 그 xml문서를 아래와 같이 등록하면 된다.
+       
+       형식) <sqlMap resource="경로명/파일명.xml"/>
+    -->   
+
+		<sqlMap resource="kr/or/ddit/mapping/dum.xml"/>
+		<sqlMap resource="kr/or/ddit/mapping/member.xml"/>
+		<sqlMap resource="kr/or/ddit/mapping/bamboo.xml"/>
+		<sqlMap resource="kr/or/ddit/mapping/gongji.xml"/>
+		<sqlMap resource="kr/or/ddit/mapping/community.xml"/>
+		<sqlMap resource="kr/or/ddit/mapping/study.xml"/>
+
+   
+   
+</sqlMapConfig>

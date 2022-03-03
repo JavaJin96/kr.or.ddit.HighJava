@@ -1,0 +1,47 @@
+@charset "UTF-8";
+.container{
+	padding: 0 20% 0 10%;
+}
+.col-sm-4{
+	float : left;
+	height: 480px;
+}
+.Info{
+	width : 97%;
+	height : 300px;
+	display : inline-block;
+	padding: 5%;
+	background-clip: content-box;
+}
+#d4{
+	width : 97%;
+	height : 300px;
+}
+.photo{
+	width: 30%; 
+	margin-right: 2%;
+	height: 100%
+}
+.cont{
+	display : inline-block;
+/* 	margin-top: 5%  */
+}
+#name{
+	font-weight : bold;
+	font-size: 1.2em;
+}
+#status{
+	font-weigt : bold;
+	color:blue;
+}
+.icon{
+	width: 30px;
+	height: 30px;
+}
+#type{
+	font-weight: bold;
+}
+.btn {
+	width: 100px;
+	margin: 0 3%;
+}
